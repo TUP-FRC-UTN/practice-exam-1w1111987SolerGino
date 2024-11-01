@@ -1,0 +1,56 @@
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="customerName">Nombre del Cliente</label>
+      <input
+        id="customerName"
+        type="text"
+        formControlName="customerName"
+        class="form-control"
+        [class.is-invalid]="orderForm.get('customerName')?.invalid && orderForm.get('customerName')?.touched"
+      />
+      <div *ngIf="orderForm.get('customerName')?.hasError('required')" class="invalid-feedback">
+        El nombre es obligatorio.
+      </div>
+      <div *ngIf="orderForm.get('customerName')?.hasError('minlength')" class="invalid-feedback">
+        El nombre debe tener al menos 3 caracteres.
+      </div>
+    </div>
+  
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [class.is-invalid]="orderForm.get('email')?.invalid && orderForm.get('email')?.touched"
+        />
+        <div *ngIf="orderForm.get('email')?.hasError('required')" class="invalid-feedback">
+          El email es obligatorio.
+        </div>
+        <div *ngIf="orderForm.get('email')?.hasError('email')" class="invalid-feedback">
+          Formato de email incorrecto.
+        </div>
+        <div *ngIf="orderForm.get('email')?.hasError('emailLimit')" class="invalid-feedback">
+          Este email ha alcanzado el límite de pedidos en las últimas 24 horas.
+        </div>
+      </div>
+      
+  
+    <div formArrayName="products" *ngFor="let product of productForms.controls; let i = index">
+      <div [formGroupName]="i" class="mb-3">
+        <label>Producto</label>
+        <select formControlName="productId" (change)="updateProductDetails(i)" class="form-select">
+          <option [value]="null">Seleccione un producto</option>
+          <option *ngFor="let option of productOptions" [value]="option.id">{{ option.name }}</option>
+        </select>
+        <input formControlName="quantity" type="number" placeholder="Cantidad" class="form-control" />
+        <button type="button" (click)="removeProduct(i)">Eliminar</button>
+      </div>
+    </div>
+  
+    <button type="button" (click)="addProduct()">Agregar Producto</button>
+  
+    <button type="submit" [disabled]="orderForm.invalid">Crear Pedido</button>
+  </form>
+  

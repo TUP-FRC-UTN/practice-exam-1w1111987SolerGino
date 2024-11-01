@@ -103,9 +103,6 @@ Desarrollar una aplicación web en Angular 18 para gestionar pedidos de una tien
 ### Instalación
 
 ```bash
-# Clonar el repositorio
-git clone [URL_DEL_REPOSITORIO]
-
 # Instalar dependencias
 cd [NOMBRE_PROYECTO]
 npm install
